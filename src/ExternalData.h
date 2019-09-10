@@ -114,6 +114,7 @@ public:
 	void invalidateDeviceVoltage(void) { _deviceVoltage= INVALID_VOLTAGE; }
 
 	bool processGravityReport(char data[],size_t length, bool authenticated, uint8_t& error);
+	bool processTiltReport(float SG, float Temp, bool authenticated, uint8_t& error);
 };
 
 extern ExternalData externalData;

@@ -299,3 +299,11 @@ bool ExternalData::processGravityReport(char data[],size_t length, bool authenti
 	return true;
 }
 
+
+bool ExternalData::processTiltReport(float SG, float Temp, bool authenticated, uint8_t& error)
+{
+	setGravity(SG, TimeKeeper.getTimeSeconds());
+	float tempC = (Temp - 32.0) * 5.0/9.0; 
+	setAuxTemperatureCelsius(tempC);
+	return true;
+}

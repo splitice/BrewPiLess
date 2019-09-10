@@ -121,6 +121,7 @@ extern "C" {
 #define CHART_LIB_PATH       "/dygraph-combined.js"
 
 #define GRAVITY_PATH       "/gravity"
+#define GRAVITY_TILT_PATH       "/gravity/tilt"
 
 #define BEER_PROFILE_PATH       "/tschedule"
 
@@ -1215,6 +1216,27 @@ private:
 		}
 	}
 
+	void processTilt(AsyncWebServerRequest *request){
+		//if(length == 0) return request->send(500);;
+		SystemConfiguration *syscfg=theSettings.systemConfiguration();
+        uint8_t error;
+		
+		if(!request->hasParam("SG", true) || !request->hasParam("Temp", true)){
+		    request->send(400);
+			return;
+		}
+
+		float SG = request->getParam("SG", true)->value().toFloat();
+		float Temp = request->getParam("Temp", true)->value().toFloat();
+
+		if(externalData.processTiltReport(SG, Temp, request->authenticate(syscfg->username,syscfg->password),error)){
+    		request->send(200,"application/json","{}");
+		}else{
+		    if(error == ErrorAuthenticateNeeded) return request->requestAuthentication();
+		    else request->send(500);
+		}
+	}
+
 public:
 
 	ExternalDataHandler(){
@@ -1230,6 +1252,7 @@ public:
 	bool canHandle(AsyncWebServerRequest *request){
 		DBG_PRINTF("req: %s\n", request->url().c_str());
 	 	if(request->url() == GRAVITY_PATH	) return true;
+	 	if(request->url() == GRAVITY_TILT_PATH	) return true;
 	 	if(request->url() == GravityDeviceConfigPath) return true;
 	 	if(request->url() == GravityFormulaPath) return true;		
 
@@ -1246,6 +1269,17 @@ public:
 			processGravity(request,_data,_dataLength);
 			// Process the name
 			externalData.sseNotify(_data);
+			stringAvailable(_data);
+			return;
+		}
+		if(request->url() == GRAVITY_TILT_PATH){
+			if(request->method() != HTTP_POST){
+				request->send(400);
+				return;
+			}
+			stringAvailable(_buffer);
+			processTilt(request);
+			
 			stringAvailable(_data);
 			return;
 		}
