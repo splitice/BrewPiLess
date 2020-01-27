@@ -156,7 +156,7 @@ module.exports = (grunt) ->
         expand: true
         files: [{
           expand: true
-          src: ['dist/english/*.htm','dist/chinese/*.htm','dist/spanish/*.htm','dist/portuguese-br/*.htm','dist/slovak/*.htm','dist/lcd.htm','dist/classic-lcd.htm']
+          src: ['dist/english/*.htm','dist/chinese/*.htm','dist/spanish/*.htm','dist/portuguese-br/*.htm','dist/slovak/*.htm','dist/italian/*.htm','dist/lcd.htm','dist/classic-lcd.htm']
           dest: '.'
           ext: '.htm.gz'
         }]
@@ -171,8 +171,8 @@ module.exports = (grunt) ->
           'build/setup.tmpl.html': ['src/setup.tmpl.html']
           'build/gravity.tmpl.html': ['src/gravity.tmpl.html']
           'build/logging.tmpl.html': ['src/logging.tmpl.html']
-          'build/config.tmpl.html': ['src/config.tmpl.html'],          
-          'build/pressure.tmpl.html': ['src/pressure.tmpl.html'],          
+          'build/config.tmpl.html': ['src/config.tmpl.html'],
+          'build/pressure.tmpl.html': ['src/pressure.tmpl.html'],
           'build/classic-index.tmpl.html': ['src/classic-index.tmpl.html']
           'build/classic-setup.tmpl.html': ['src/classic-setup.tmpl.html']
           'build/classic-gdc.tmpl.html': ['src/classic-gdc.tmpl.html']
@@ -183,11 +183,11 @@ module.exports = (grunt) ->
           'build/lcd.html' : ['src/lcd.html']
           'build/classic-lcd.html' : ['src/classic-lcd.html']
         ]
-  
+
     multi_lang_site_generator:
       default:
           options:
-            vocabs:           ['english','chinese','spanish','portuguese-br', 'slovak']
+            vocabs:           ['english','chinese','spanish','portuguese-br', 'slovak', 'italian']
             vocab_directory:  'src/locales'
             output_directory: 'dist'
             template_directory: 'dist'
